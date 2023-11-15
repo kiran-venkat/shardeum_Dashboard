@@ -1,39 +1,49 @@
-// import React from "react";
 import { useLocation } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import { DataCard } from "./Components/DataCard/DataCard";
 import { IconButton, Switch } from "@mui/material";
 import axios from "axios";
-import React, { useState, useEffect } from 'react';
-
-
-
+import React, { useState, useEffect } from "react";
 
 function CourseDetailsPage() {
   const location = useLocation();
   const { state } = location;
-  
-  // const [persistedUserData, setPersistedUserData] = useState([]);
-
-  // useEffect should be called unconditionally at the top level
-  // useEffect(() => {
-  //   // Load persisted user data from local storage
-  //   const persistedData = JSON.parse(localStorage.getItem("persistedUserData")) || [];
-  //   setPersistedUserData(persistedData);
-  // }, []); // Ensure to pass an empty dependency array to useEffect
-
-
-  // if (!state || !state.course || !state.userData) {
-  //   return <div>Error: Invalid state</div>;
-  // }
 
   const { course, userData } = state;
-  const [persistedUserData, setPersistedUserData] = useState(userData);
-  useEffect(() => {
-    const persistedData = JSON.parse(localStorage.getItem("persistedUserData")) || userData;
-    setPersistedUserData(persistedData);
-  }, [userData]); // Update persistedUserData when userData changes
 
+  const [userDetails, setUserDetails] = useState(userData);
+
+  const [blockStatuses, setBlockStatuses] = useState(() => {
+    const storedBlockStatuses = JSON.parse(
+      localStorage.getItem("blockStatuses")
+    );
+    return storedBlockStatuses || {};
+  });
+
+  const handleBlockToggle = async (userId, blockStatus) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/auth/toggleBlock?userId=${userId}`
+      );
+
+      // Update the local state based on the API response
+      setBlockStatuses((prevBlockStatuses) => ({
+        ...prevBlockStatuses,
+        [userId]: response.data.isBlocked ? "on" : "off",
+      }));
+
+      // Save the updated block statuses in local storage
+      localStorage.setItem(
+        "blockStatuses",
+        JSON.stringify({
+          ...blockStatuses,
+          [userId]: response.data.isBlocked ? "on" : "off",
+        })
+      );
+    } catch (error) {
+      console.error("Error toggling block status:", error);
+    }
+  };
 
   const columns = [
     { field: "username", headerName: "Username", flex: 0.2 },
@@ -46,40 +56,32 @@ function CourseDetailsPage() {
       headerName: "Block/Unblock",
       flex: 0.2,
       renderCell: (params) => (
-        <IconButton onClick={() => handleBlockToggle(params.row.id, params.row.blockStatus)}>
-          <Switch checked={params.row.blockStatus} />
+        <IconButton
+          onClick={() =>
+            handleBlockToggle(params.row.id, params.row.blockStatus)
+          }
+        >
+          <Switch
+            checked={blockStatuses[params.row.id] === "on"}
+            onChange={() =>
+              handleBlockToggle(params.row.id, params.row.blockStatus)
+            }
+          />
         </IconButton>
       ),
     },
   ];
 
+  useEffect(() => {
+    setUserDetails(userData); // Update local state when userData changes
+  }, [userData]);
 
-  const handleBlockToggle = async (userId, blockStatus) => {
-    try {
-      await axios.post(`http://localhost:8080/api/auth/toggleBlock?userId=${userId}`);
-      
-      // Update the blockStatus in the local state
-      const updatedUserData = persistedUserData.map((user) =>
-        user.id === userId ? { ...user, blockStatus: !blockStatus } : user
-      );
-
-      // Update local storage with the new user data
-      localStorage.setItem("persistedUserData", JSON.stringify(updatedUserData));
-
-      // Update state to trigger re-render
-      setPersistedUserData(updatedUserData);
-    } catch (error) {
-      console.error("Error toggling block status:", error);
-    }
-  };
   return (
     <div style={{ textAlign: "center" }}>
-      {/* Course Details Title */}
       <div style={{ marginTop: "30px", marginBottom: "20px" }}>
         <h2>Course Details</h2>
       </div>
 
-      {/* Course Details Section */}
       <div
         key={course._id}
         style={{
@@ -95,9 +97,9 @@ function CourseDetailsPage() {
           style={{
             width: "75%",
             height: "75%",
-            borderRadius: "12px", // You can adjust the border-radius as needed
-            boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)", // Optional: Add a subtle box shadow
-            objectFit: "cover", // Ensure the image covers the entire container
+            borderRadius: "12px",
+            boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+            objectFit: "cover",
             marginBottom: "30px",
           }}
         />
@@ -109,21 +111,19 @@ function CourseDetailsPage() {
         <DataCard title="Duration" data={course.duration} />
       </div>
 
-      {/* User Details Title */}
       <div style={{ marginTop: "30px", marginBottom: "20px" }}>
         <h2>User Details</h2>
       </div>
 
-      {/* User Details Section */}
       <div style={{ height: "400px", width: "100%" }} className="tablediv">
         <DataGrid
           sx={{
             backgroundColor: "white",
             boxShadow: 2,
             border: 0,
-            borderColor: 'primary.light',
-            '& .MuiDataGrid-cell:hover': {
-              color: 'primary.main',
+            borderColor: "primary.light",
+            "& .MuiDataGrid-cell:hover": {
+              color: "primary.main",
             },
           }}
           rows={userData}
