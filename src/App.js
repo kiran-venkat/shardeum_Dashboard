@@ -5,8 +5,7 @@ import BeatLoader from "react-spinners/BeatLoader";
 import { useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { PieChart } from '@mui/x-charts/PieChart';
-
+import { PieChart } from "@mui/x-charts/PieChart";
 
 function App() {
   const [courses, setCourses] = useState([]);
@@ -75,51 +74,53 @@ function App() {
 
   const labelRenderer = ({ datum }) => {
     return (
-      <text x={datum.x + datum.width} y={datum.y + datum.height / 2} textAnchor="start">
+      <text
+        x={datum.x + datum.width}
+        y={datum.y + datum.height / 2}
+        textAnchor="start"
+      >
         {datum.label}
       </text>
     );
   };
 
   return (
-<div className="Dashboard" style={{ textAlign: "center" }}>
-{/* <PieChart
-      series={[{ data: pieChartData }]}
-      width={400}
-      height={200}
-      labelRenderer={labelRenderer}
-    /> */}
-  <div
-    className="Dashboard-grid"
-    style={{
-      display: "flex",
-      flexWrap: "wrap",
-      justifyContent: "space-around", // Adjust as needed
-    }}
-  >
-    <div key="total-courses" style={{ margin: "10px" }}>
-      <DataCard
-        title="Total Number of Courses"
-        data={courses.length}
-        onClick={() => {/* Handle click if needed */}}
+    <div className="Dashboard" style={{ textAlign: "center" }}>
+      <PieChart
+        series={[{ data: pieChartData }]}
+        width={600}
+        height={200}
+        labelRenderer={labelRenderer}
       />
-    </div>
+      <div
+        className="Dashboard-grid"
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-around", // Adjust as needed
+        }}
+      >
+        <div key="total-courses" style={{ margin: "10px" }}>
+          <DataCard
+            title="Total Number of Courses"
+            data={courses.length}
+            onClick={() => {
+              /* Handle click if needed */
+            }}
+          />
+        </div>
 
-    {courses.map((course) => (
-      <div key={course._id} style={{ margin: "10px" }}>
-        <DataCard
-          title={course.title}
-          data={course.description}
-          onClick={() => handleCourseClick(course)}
-		  
-        />
+        {courses.map((course) => (
+          <div key={course._id} style={{ margin: "10px" }}>
+            <DataCard
+              title={course.title}
+              data={course.description}
+              onClick={() => handleCourseClick(course)}
+            />
+          </div>
+        ))}
       </div>
-    ))}
-  </div>
-
-</div>
-
-
+    </div>
   );
 }
 

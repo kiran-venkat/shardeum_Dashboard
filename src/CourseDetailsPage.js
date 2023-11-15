@@ -1,23 +1,40 @@
-import React from "react";
+// import React from "react";
 import { useLocation } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import { DataCard } from "./Components/DataCard/DataCard";
 import { IconButton, Switch } from "@mui/material";
 import axios from "axios";
+import React, { useState, useEffect } from 'react';
+
 
 
 
 function CourseDetailsPage() {
   const location = useLocation();
   const { state } = location;
+  
+  // const [persistedUserData, setPersistedUserData] = useState([]);
 
-  if (!state || !state.course || !state.userData) {
-    return <div>Error: Invalid state</div>;
-  }
+  // useEffect should be called unconditionally at the top level
+  // useEffect(() => {
+  //   // Load persisted user data from local storage
+  //   const persistedData = JSON.parse(localStorage.getItem("persistedUserData")) || [];
+  //   setPersistedUserData(persistedData);
+  // }, []); // Ensure to pass an empty dependency array to useEffect
+
+
+  // if (!state || !state.course || !state.userData) {
+  //   return <div>Error: Invalid state</div>;
+  // }
 
   const { course, userData } = state;
+  const [persistedUserData, setPersistedUserData] = useState(userData);
+  useEffect(() => {
+    const persistedData = JSON.parse(localStorage.getItem("persistedUserData")) || userData;
+    setPersistedUserData(persistedData);
+  }, [userData]); // Update persistedUserData when userData changes
 
-  // Define columns for the DataGrid
+
   const columns = [
     { field: "username", headerName: "Username", flex: 0.2 },
     { field: "email", headerName: "Email", flex: 0.2 },
@@ -36,9 +53,21 @@ function CourseDetailsPage() {
     },
   ];
 
+
   const handleBlockToggle = async (userId, blockStatus) => {
     try {
       await axios.post(`http://localhost:8080/api/auth/toggleBlock?userId=${userId}`);
+      
+      // Update the blockStatus in the local state
+      const updatedUserData = persistedUserData.map((user) =>
+        user.id === userId ? { ...user, blockStatus: !blockStatus } : user
+      );
+
+      // Update local storage with the new user data
+      localStorage.setItem("persistedUserData", JSON.stringify(updatedUserData));
+
+      // Update state to trigger re-render
+      setPersistedUserData(updatedUserData);
     } catch (error) {
       console.error("Error toggling block status:", error);
     }
