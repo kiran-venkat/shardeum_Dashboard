@@ -1,0 +1,103 @@
+.eachcollegepage{
+    height: calc(100vh - 70px);
+    overflow-y: scroll;
+    padding: 20px;
+}
+
+.collegeinfo{
+    background-color: white;
+    width: 100%;
+    border: 0.2px solid #c4c5ff;
+    border-radius: 2px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;  
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.collegeinfo > h2{
+    color: #1b1e22;
+    margin-bottom: 25px;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.collegeinfoele{
+    display: flex;
+    flex-direction: column;
+}
+
+.collegeinfoele > span{
+    margin-bottom: 15px;
+    margin-top: 25px;
+}
+
+.collegeinfoele > input{
+    padding: 8px;
+    font-size: 16px;
+    border-color: #818181;
+    outline: none;
+    border: 1px solid rgb(186, 186, 186);
+    
+}
+
+.collegeinfoele{
+    width: 40%;
+    /* margin: 10px; */
+}
+
+.collegeinfoinner{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-bottom: 30px;
+}
+
+.collegeinfoelebtn
+{
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 40px;
+}
+
+
+.unlockbtn{
+    background-color: #844FFF;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 10px 30px;
+    font-size: 16px;
+    align-self: flex-end;
+    justify-self: flex-end;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.unlockbtn:hover{
+    background-color: #7337ff;
+}
+
+
+.sec2unlockbtn{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 40px;
+    margin-bottom: 30px;
+}
+
+.filesgrid{
+
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    justify-content: space-evenly;
+    margin-bottom: 30px;
+}
