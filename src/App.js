@@ -86,12 +86,6 @@ function App() {
 
   return (
     <div className="Dashboard" style={{ textAlign: "center" }}>
-      <PieChart
-        series={[{ data: pieChartData }]}
-        width={600}
-        height={200}
-        labelRenderer={labelRenderer}
-      />
       <div
         className="Dashboard-grid"
         style={{
@@ -119,6 +113,17 @@ function App() {
             />
           </div>
         ))}
+        <div style={{ marginTop: "-250px", marginBottom:"50px" }}>
+          <h2 style={{ textAlign: "center", marginBottom:"15px" }}>
+            Users Enrolled
+          </h2>
+          <PieChart
+            series={[{ data: pieChartData }]}
+            width={600}
+            height={200}
+            labelRenderer={labelRenderer}
+          />
+        </div>
       </div>
     </div>
   );

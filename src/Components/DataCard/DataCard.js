@@ -36,7 +36,7 @@ export const DataCard = ({ title, data, onClick }) => {
       <BeatLoader color="indigo" style={{ marginTop: "50px" }} />
     </div>
   ) : (
-    <span className="datacardno" style={{ fontSize: '20px' }}>{data}</span>
+    <span className="datacardno" style={{ fontSize: '16px' }}>{data}</span>
   )}
 </div>
 
