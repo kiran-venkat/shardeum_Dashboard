@@ -1,8 +1,6 @@
 import React from "react";
 import "./SideNav.css";
 import { ImStatsDots } from "react-icons/im";
-import { IoIosCheckmarkCircle } from "react-icons/io";
-import { AiOutlineSearch } from "react-icons/ai";
 
 export const SideNav = () => {
 	return (
@@ -13,8 +11,8 @@ export const SideNav = () => {
 				// 	navigate("/");
 				// }}
 			>
-				<a href="/">Shardeum Dashboard</a>
-				{/* <SiMatrix /> */}
+				<a href="/">Shardeum Admin</a>
+
 			</div>
 			<div className="innersidenav">
 				<a
@@ -27,20 +25,8 @@ export const SideNav = () => {
 					<ImStatsDots className="sidenavicons" />
 					<p>Dashboard</p>
 				</a>
-				<a
-					href="/fillednotfilled"
-					className="sidenavitems"
-					// onClick={() => {
-					// 	navigate("/fillednotfilled");
-					// }}
-				>
-					<IoIosCheckmarkCircle className="sidenavicons" />
-					<p>Filled and Not Filled</p>
-				</a>
-				{/* <div className="sidenavitems">
-					<AiOutlineSearch className="sidenavicons" />
-					<p>Search & Status</p>
-				</div> */}
+				
+			
 			</div>
 		</div>
 	);

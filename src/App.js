@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { DataCard } from "./Components/DataCard/DataCard";
-import { DataGrid } from "@mui/x-data-grid";
-import BeatLoader from "react-spinners/BeatLoader";
-import { useParams } from "react-router-dom";
-import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import { PieChart } from "@mui/x-charts/PieChart";
+import React, { useEffect, useState } from 'react';
+import { DataCard } from './Components/DataCard/DataCard';
+import { DataGrid } from '@mui/x-data-grid';
+import BeatLoader from 'react-spinners/BeatLoader';
+import { useParams } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { PieChart } from '@mui/x-charts/PieChart';
 
 function App() {
   const [courses, setCourses] = useState([]);
@@ -15,11 +15,11 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   const columns = [
-    { field: "username", headerName: "Username", flex: 0.2 },
-    { field: "email", headerName: "Email", flex: 0.2 },
-    { field: "walletAddress", headerName: "Wallet Address", flex: 0.2 },
-    { field: "designation", headerName: "Designation", flex: 0.2 },
-    { field: "portfolio", headerName: "Portfolio", flex: 0.2 },
+    { field: 'username', headerName: 'Username', flex: 0.2 },
+    { field: 'email', headerName: 'Email', flex: 0.2 },
+    { field: 'walletAddress', headerName: 'Wallet Address', flex: 0.2 },
+    { field: 'designation', headerName: 'Designation', flex: 0.2 },
+    { field: 'portfolio', headerName: 'Portfolio', flex: 0.2 },
   ];
 
   useEffect(() => {
@@ -29,14 +29,32 @@ function App() {
   const getCourseData = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/course/allCourses"
+        'https://shardeum-backend.onrender.com/api/course/allCourses'
       );
       const result = await response.json();
       setCourses(result.courses);
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching course data:", error);
+      console.error('Error fetching course data:', error);
       setLoading(false);
+    }
+  };
+
+  const syncCourseData = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/course/syncData');
+      const result = await response.json();
+  
+      if (response.ok) {
+        toast.success('Course data synced successfully!');
+      } else {
+        throw new Error(result.message || 'Failed to sync data');
+      }
+  
+      console.log(result);
+    } catch (error) {
+      console.error('Error syncing course data:', error);
+      toast.error(`Error syncing course data`);
     }
   };
 
@@ -48,7 +66,7 @@ function App() {
     const userData = await Promise.all(
       usersEnrolled.map(async (userId) => {
         const userResponse = await fetch(
-          `http://localhost:8080/api/auth/user?userId=${userId}`
+          `https://shardeum-backend.onrender.com/api/auth/user?userId=${userId}`
         );
         const userResult = await userResponse.json();
         return {
@@ -85,16 +103,37 @@ function App() {
   };
 
   return (
-    <div className="Dashboard" style={{ textAlign: "center" }}>
+    
+    <div className="Dashboard" style={{ textAlign: 'center' }}>
+    <Toaster
+  position="top-center"
+  reverseOrder={false}
+/>
+      <button
+        className="sync-button"
+        onClick={syncCourseData}
+        style={{
+          padding: "10px",
+          marginTop: "10px",
+          backgroundColor: "#FF8743",
+          cursor: "pointer",
+          border: "none",
+          borderRadius: "10px",
+          color: "white"
+        }}
+      >
+        Sync Courses
+      </button>
+
       <div
         className="Dashboard-grid"
         style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-around", // Adjust as needed
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'space-around', // Adjust as needed
         }}
       >
-        <div key="total-courses" style={{ margin: "10px" }}>
+        <div key="total-courses" style={{ margin: '10px' }}>
           <DataCard
             title="Total Number of Courses"
             data={courses.length}
@@ -105,7 +144,7 @@ function App() {
         </div>
 
         {courses.map((course) => (
-          <div key={course._id} style={{ margin: "10px" }}>
+          <div key={course._id} style={{ margin: '10px' }}>
             <DataCard
               title={course.title}
               data={course.description}
@@ -113,8 +152,8 @@ function App() {
             />
           </div>
         ))}
-        <div style={{ marginTop: "-250px", marginBottom:"50px" }}>
-          <h2 style={{ textAlign: "center", marginBottom:"15px" }}>
+        <div style={{ marginTop: '-250px', marginBottom: '50px' }}>
+          <h2 style={{ textAlign: 'center', marginBottom: '15px' }}>
             Users Enrolled
           </h2>
           <PieChart
