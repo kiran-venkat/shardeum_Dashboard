@@ -6,7 +6,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import { SideNav } from "./Components/SideNav/SideNav";
 import { TopBar } from "./Components/TopBar/TopBar";
-import { FillednFilled } from "./Pages/Filled_NotFilled/FillednFilled";
 import { Eachcollege } from "./Pages/EachCollege/Eachcollege";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import CourseDetailsPage from "./CourseDetailsPage"; // Create a new component for the course details page
@@ -16,10 +15,6 @@ const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <App />
-	},
-	{
-		path: "/fillednotfilled",
-		element: <FillednFilled />
 	},
 	{
 		path: "/fillednotfilled/college/:id",

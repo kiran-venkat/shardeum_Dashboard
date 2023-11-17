@@ -23,7 +23,7 @@ function CourseDetailsPage() {
   const handleBlockToggle = async (userId, blockStatus) => {
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/auth/toggleBlock?userId=${userId}`
+        `https://shardeum-backend.onrender.com/api/auth/toggleBlock?userId=${userId}`
       );
 
       // Update the local state based on the API response
@@ -89,14 +89,16 @@ function CourseDetailsPage() {
           display: "flex",
           flexWrap: "wrap",
           justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
         }}
       >
         <img
           src={course.banner}
           alt={course.title}
           style={{
-            width: "75%",
-            height: "75%",
+            width: "40%",
+            height: "40%",
             borderRadius: "12px",
             boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
             objectFit: "cover",
@@ -104,11 +106,19 @@ function CourseDetailsPage() {
           }}
         />
 
+        <div  style={{
+          margin: "10px",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+        }}>
+
         <DataCard title="Title" data={course.title} />
         <DataCard title="Description" data={course.description} />
         <DataCard title="Users Enrolled" data={course.usersEnrolled.length} />
         <DataCard title="Level" data={course.level} />
         <DataCard title="Duration" data={course.duration} />
+        </div>
       </div>
 
       <div style={{ marginTop: "30px", marginBottom: "20px" }}>
